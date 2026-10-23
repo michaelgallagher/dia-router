@@ -1,1 +1,4 @@
 build/
+
+# Personal rules belong in ~/.config/dia-router/rules.json, never in the repo.
+rules.json

@@ -10,7 +10,9 @@ macOS sends every link you click in other apps (Slack, Mail, Teams and so on) to
 ./install.sh
 ```
 
-This builds the app, installs it to `~/Applications/Dia Router.app`, and creates `~/.config/dia-router/rules.json` from `rules.example.json` if you don't have one yet.
+This builds the app, installs it to `~/Applications/Dia Router.app`, and creates `~/.config/dia-router/rules.json` from `rules.example.json` if you don't have one yet. Edit that file to match your own profiles and domains.
+
+Your rules live in `~/.config`, outside this repo, so they stay private. `rules.example.json` is only a template, and running `install.sh` again never overwrites your rules.
 
 Then set it as your default browser in **System Settings → Desktop & Dock → Default web browser → Dia Router**.
 
@@ -24,16 +26,16 @@ The first routed link triggers a macOS prompt asking to let Dia Router control D
 {
   "default": "Personal",
   "rules": [
-    { "profile": "NHS", "match": ["nhs.uk", "nhs.net"] },
-    { "profile": "HSCIC", "match": ["hscic.gov.uk", "github.com/nhsuk"] }
+    { "profile": "Work", "match": ["mycompany.com", "mycompany.atlassian.net", "github.com/mycompany"] },
+    { "profile": "Client", "match": ["client-example.org"] }
   ]
 }
 ```
 
 - `profile` is the profile name exactly as Dia shows it.
 - A `match` pattern is a domain, optionally followed by a path prefix:
-  - `nhs.uk` matches `nhs.uk` and every subdomain, such as `www.nhs.uk`. `*.nhs.uk` means the same.
-  - `github.com/nhsuk` matches GitHub URLs whose path starts with `/nhsuk`.
+  - `mycompany.com` matches `mycompany.com` and every subdomain, such as `docs.mycompany.com`. `*.mycompany.com` means the same.
+  - `github.com/mycompany` matches GitHub URLs whose path starts with `/mycompany`.
 - Rules are checked in order and the first match wins.
 - `default` is used when nothing matches. Leave it out to open unmatched links in whichever profile is active in Dia.
 

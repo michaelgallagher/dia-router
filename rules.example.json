@@ -2,12 +2,12 @@
   "default": "Personal",
   "rules": [
     {
-      "profile": "NHS",
-      "match": ["nhs.uk", "nhs.net"]
+      "profile": "Work",
+      "match": ["mycompany.com", "mycompany.atlassian.net", "github.com/mycompany"]
     },
     {
-      "profile": "HSCIC",
-      "match": ["hscic.gov.uk"]
+      "profile": "Client",
+      "match": ["client-example.org"]
     }
   ]
 }

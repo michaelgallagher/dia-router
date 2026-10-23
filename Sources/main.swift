@@ -53,7 +53,7 @@ func loadRules() -> RuleSet {
 
 /// A pattern is a domain, optionally followed by a path prefix.
 /// "example.com" matches example.com and all its subdomains ("*.example.com" means the same).
-/// "github.com/nhsuk" matches github.com URLs whose path starts with /nhsuk.
+/// "github.com/mycompany" matches github.com URLs whose path starts with /mycompany.
 func pattern(_ pattern: String, matches url: URL) -> Bool {
     guard let host = url.host?.lowercased() else { return false }
     var pattern = pattern.lowercased()
