@@ -1,0 +1,13 @@
+{
+  "default": "Personal",
+  "rules": [
+    {
+      "profile": "NHS",
+      "match": ["nhs.uk", "nhs.net"]
+    },
+    {
+      "profile": "HSCIC",
+      "match": ["hscic.gov.uk"]
+    }
+  ]
+}
