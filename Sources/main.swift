@@ -69,6 +69,23 @@ func pattern(_ pattern: String, matches url: URL) -> Bool {
     return true
 }
 
+/// Microsoft Safe Links (Teams, Outlook) wraps links as https://<wrapper>/...?url=<real link>.
+/// Rules are matched against the real link, but the wrapped one is still opened so the
+/// click-time safety check runs.
+func unwrapped(_ url: URL) -> URL {
+    var url = url
+    for _ in 0..<3 {
+        guard let host = url.host?.lowercased(),
+              host.hasSuffix("safelinks.protection.outlook.com")
+                || (host.hasSuffix("static.microsoft") && url.path.contains("safelinks")),
+              let inner = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                .queryItems?.first(where: { $0.name.lowercased() == "url" })?.value,
+              let innerURL = URL(string: inner) else { break }
+        url = innerURL
+    }
+    return url
+}
+
 func profile(for url: URL, in ruleSet: RuleSet) -> String? {
     for rule in ruleSet.rules where rule.match.contains(where: { pattern($0, matches: url) }) {
         return rule.profile
@@ -141,12 +158,14 @@ func openPlainlyInDia(_ url: URL) {
 }
 
 func route(_ url: URL) {
-    let target = profile(for: url, in: loadRules())
+    let real = unwrapped(url)
+    let target = profile(for: real, in: loadRules())
+    let described = real == url ? url.absoluteString : "\(real.absoluteString) (via Safe Links)"
     do {
         try openInDia(url, profile: target)
-        log("\(url.absoluteString) -> \(target ?? "active profile")")
+        log("\(described) -> \(target ?? "active profile")")
     } catch {
-        log("\(url.absoluteString) -> \(target ?? "active profile") FAILED (\(error.localizedDescription)); opened in Dia without routing")
+        log("\(described) -> \(target ?? "active profile") FAILED (\(error.localizedDescription)); opened in Dia without routing")
         openPlainlyInDia(url)
     }
 }

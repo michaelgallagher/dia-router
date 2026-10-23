@@ -37,6 +37,7 @@ The first routed link triggers a macOS prompt asking to let Dia Router control D
   - `mycompany.com` matches `mycompany.com` and every subdomain, such as `docs.mycompany.com`. `*.mycompany.com` means the same.
   - `github.com/mycompany` matches GitHub URLs whose path starts with `/mycompany`.
 - Rules are checked in order and the first match wins.
+- Links wrapped by Microsoft Safe Links (from Teams or Outlook) are matched by the real link inside the wrapper. The wrapped link is still what opens, so Microsoft's safety check still runs.
 - `default` is used when nothing matches. Leave it out to open unmatched links in whichever profile is active in Dia.
 
 The file is read on every link, so changes apply immediately. No rebuild needed.
